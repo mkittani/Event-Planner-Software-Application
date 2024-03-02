@@ -1,1 +1,0 @@
-# Event-Planner-Software-Application
