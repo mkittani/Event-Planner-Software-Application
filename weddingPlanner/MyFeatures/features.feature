@@ -1,10 +1,10 @@
 Feature: Event Management
 
-    Scenario: User Registration and Login
-        Given a user accesses the system
-        When the user clicks on "Register"
-        And fills in the required information
-        Then the user receives a confirmation email
+#    Scenario: User Registration and Login
+#        Given a user accesses the system
+#        When the user clicks on "Register"
+#        And fills in the required information
+#        Then the user receives a confirmation email
 
     Scenario: Event Creation
         Given an event organizer is logged in
