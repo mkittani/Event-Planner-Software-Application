@@ -1,4 +1,5 @@
 Feature: add event
+
   Scenario: Event Creation
     Given an event organizer is logged in
     When the organizer creates a new event
