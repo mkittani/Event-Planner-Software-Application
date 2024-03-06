@@ -33,6 +33,7 @@ public class event_creation {
         hall_number = scanner.nextInt();
         switch (hall_number) {
             case 1:
+
                 break;
             case 2:
                 break;
