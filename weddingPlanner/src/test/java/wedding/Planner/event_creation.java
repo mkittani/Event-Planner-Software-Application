@@ -55,4 +55,5 @@ public class event_creation {
     public void the_event_is_created_successfully() {
         out.println("Congrats! Hall"+hall_number+" has been registered to the user ");
     }
+
 }
