@@ -4,7 +4,11 @@ import static java.lang.System.*;
 import java.util.*;
 
 public class event_creation {
+//    private UserManager userManager;
+    private static User info;
     int hall_number;
+    String username=info.getUsername();
+
     public static void main(String[] args){
         event_creation instance = new event_creation();
         instance.an_event_organizer_is_logged_in();
@@ -31,30 +35,39 @@ public class event_creation {
                 "Contains air conditioning, each table takes up to 20 people, Price: 5500 ils");
         Scanner scanner = new Scanner(in);
         hall_number = scanner.nextInt();
+//        String pass=info.getPassword();
+//        String role=info.getRole();
+//        String x= String.valueOf(userManager.getUserById(username));
+        String tempHallNumber=String.valueOf(hall_number);
         switch (hall_number) {
             case 1:
-
+                tempHallNumber="Hall1";
                 break;
             case 2:
+                tempHallNumber="Hall2";
                 break;
             case 3:
+                tempHallNumber="Hall3";
                 break;
             case 4:
+                tempHallNumber="Hall4";
                 break;
             default:
                 out.println("Please select a valid number from the upper menu.");
         }
+        info.setHallnumber(tempHallNumber);
         event_creation instance3=new event_creation();
         instance3.the_event_is_created_successfully();
     }
     
     @When("specifies date, time, location, people, theme, and description")
     public void specifies_date_time_location_people_theme_and_description() {
+        out.println("hello");
     }
 
     @Then("the event is created successfully")
     public void the_event_is_created_successfully() {
-        out.println("Congrats! Hall"+hall_number+" has been registered to the user ");
+        out.println("Congrats! Hall"+hall_number+" has been registered to the user "+info.getUsername());
     }
 
 }

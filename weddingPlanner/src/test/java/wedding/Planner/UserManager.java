@@ -6,7 +6,11 @@ import java.util.Scanner;
 import static java.lang.System.*;
 
 public class UserManager {
+    private static User info;
     private Map<String, User> users = new HashMap<>();
+    public User getUserById(String username) {
+        return users.get(username); // This will return the user associated with the username, or null if no such user exists
+    }
 
     public void registerUser(String username, String password, String role, String hallnumber) {
         User user;
@@ -48,7 +52,8 @@ public class UserManager {
         while (!exit) {
             out.println("1-Sign in");
             out.println("2-Sign up");
-            out.println("3-Exit");
+           // out.println("3-Sign up");
+            out.println("4-Exit");
 
             out.print("Choose an option: ");
             int choice = sc.nextInt();
@@ -68,15 +73,19 @@ public class UserManager {
                 case 2: // Sign up
                     out.print("Enter username: ");
                     String newUsername = sc.nextLine();
+                    info.setUsername(newUsername);
                     out.print("Enter password: ");
                     String newPassword = sc.nextLine();
+                    info.setPassword(newPassword);
                     out.print("Enter role (ADMIN, SERVICE_PROVIDER, USER): ");
                     String role = sc.nextLine();
-                    out.print("Enter hall number: ");  // Ask for the hall number
+                    info.setRole(role);
+//                    out.print("Enter hall number: ");  // Ask for the hall number
                     String hallNumber = sc.nextLine();  // Read the hall number
                     userManager.registerUser(newUsername, newPassword, role, hallNumber);  // Pass the hall number as an argument
                     out.println("User registered successfully!");
                     break;
+
                 case 3: // Exit
                     exit = true;
                     break;
