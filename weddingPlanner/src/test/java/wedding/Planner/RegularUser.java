@@ -5,5 +5,4 @@ public class RegularUser extends User {
         super(username, password, "USER", hallNumber); // Pass hallNumber to the superclass constructor
     }
 
-    // Additional RegularUser-specific methods here
 }
