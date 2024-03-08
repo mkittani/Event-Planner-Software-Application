@@ -43,8 +43,7 @@ public class UserManager {
         UserManager userManager = new UserManager();
         VenueBookingSteps venueBookingSteps = new VenueBookingSteps();
 
-        String VenueId = "Venue1"; // This should be a valid venue ID in your system
-        String Date = "2024-03-05";
+       git push
         // Register some users
         userManager.registerUser("adminUser", "adminPass", "ADMIN","hallnumber");
         userManager.registerUser("serviceProviderUser", "servicePass", "SERVICE_PROVIDER","hallnumber");
