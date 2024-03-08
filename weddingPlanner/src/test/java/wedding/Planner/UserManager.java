@@ -43,7 +43,8 @@ public class UserManager {
         UserManager userManager = new UserManager();
         VenueBookingSteps venueBookingSteps = new VenueBookingSteps();
 
-
+        String VenueId = "Venue1"; // This should be a valid venue ID in your system
+        String Date = "2024-03-05";
         // Register some users
         userManager.registerUser("adminUser", "adminPass", "ADMIN","hallnumber");
         userManager.registerUser("serviceProviderUser", "servicePass", "SERVICE_PROVIDER","hallnumber");
@@ -125,22 +126,21 @@ public class UserManager {
                 case 3: // Book a venue
 
 
+                    System.out.println("Please enter the venue ID you wish to book:");
+                    String venueId = sc.nextLine();
+
+                    System.out.println("Please enter the date you wish to book the venue for (YYYY-MM-DD):");
+                    String date = sc.nextLine();
+
                     try {
-                        System.out.println("Please enter the venue ID you wish to book:");
-                        String venueId = sc.nextLine();
-                        //venueBookingSteps.findASuitableVenue(venueId);
-
-                        System.out.println("Please enter the date you wish to book the venue for (YYYY-MM-DD):");
-                        String date = sc.nextLine();
-                        //venueBookingSteps.reserveVenueForSpecificDate(date);
-
+                        venueBookingSteps.findASuitableVenue(venueId); // Attempt to find the venue
+                        venueBookingSteps.reserveVenueForSpecificDate(date); // Attempt to reserve the venue for the specified date
 
                         System.out.println("Venue booked successfully!");
-                        venueBookingSteps.confirmTheReservation();
+                        venueBookingSteps.confirmTheReservation(); // This method should provide additional confirmation
 
                     } catch (IllegalStateException e) {
-                        System.out.println(e.getMessage());
-                        // Handle other potential errors or issues here
+                        System.out.println("Booking failed: " + e.getMessage()); // Print out the error message if booking fails
                     }
                     break;
 //******************************************************************************************************************

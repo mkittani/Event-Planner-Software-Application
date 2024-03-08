@@ -1,48 +1,34 @@
 package wedding.Planner;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.*;
 
 public class VenueService {
-    // This is a simplistic implementation. You'd typically interact with a database here.
-    private List<Venue> venues = new ArrayList<>();
+    private Map<String, Venue> venues = new HashMap<>();
 
-    public List<Venue> searchVenues(String date, String location, int capacity) {
-        // Return a list of venues that match the criteria
-        return venues.stream()
-                .filter(venue -> venue.getDate().equals(date) && venue.getLocation().equals(location) && venue.getCapacity() >= capacity)
-                .collect(Collectors.toList());
+    public VenueService() {
+        // Initialize with a venue that can be booked
+        venues.put("Venue1", new Venue("Venue1", "2024-5-5", 100, true));
+        venues.put("Venue2", new Venue("Venue2", "2024-6-6", 200, true));
+        venues.put("Venue3", new Venue("Venue3", "2024-7-7", 300, true));// Assume Venue constructor accepts an availability flag
     }
 
     public Venue findVenue(String venueId) {
-        // Find and return a venue by ID
-        return venues.stream()
-                .filter(venue -> venue.getId().equals(venueId))
-                .findFirst()
-                .orElse(null);
+        return venues.get(venueId);
     }
 
     public Booking bookVenue(Venue venue, String date) {
-        // Implement booking logic, check for availability, and create a booking
-        // This is a simplified version
-        Booking booking = new Booking(venue, date);
-        // Add booking to a list of bookings, check for conflicts, etc.
-        return booking;
+        // Add logic to handle booking only if the venue is available on the given date
+        // For simplicity, let's assume all dates are available for this venue
+        return new Booking(venue, date);
     }
 
-    public void cancelBooking(Booking booking) {
-        // Cancel the booking
-        // Remove booking from list, update venue availability, etc.
-    }
-
-    public boolean updateBooking(Booking booking, String newDate) {
-        // Update the booking with a new date
-        booking.setDate(newDate);
-        // Update booking list, check for conflicts, etc.
-        return false;
-    }
-
-
-
+    // ... other methods ...
 }
+
+
+

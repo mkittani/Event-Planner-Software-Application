@@ -18,27 +18,30 @@ public class VenueBookingSteps {
     private Venue selectedVenue;
     private Booking currentBooking;
 
+
     public VenueBookingSteps() {
-        this.venueService = new VenueService(); // Initialize the venue service here or inject it
+        this.venueService = new VenueService(); // Make sure this is the same instance used throughout the application
     }
 
-    // Public method to find a suitable venue
     public void findASuitableVenue(String venueId) {
-        selectedVenue = venueService.findVenue(venueId);
-        if (selectedVenue == null) {
+        Venue venue = venueService.findVenue(venueId);
+        if (venue == null) {
             throw new IllegalStateException("No suitable venue found for ID: " + venueId);
         }
+        // If the venue is found, store it for booking
+        this.selectedVenue = venue;
     }
 
-    // Public method to reserve a venue for a specific date
     public void reserveVenueForSpecificDate(String date) {
-        if (selectedVenue == null) {
+        if (this.selectedVenue == null) {
             throw new IllegalStateException("Venue has not been selected");
         }
-        currentBooking = venueService.bookVenue(selectedVenue, date);
-        if (currentBooking == null) {
+        Booking booking = venueService.bookVenue(this.selectedVenue, date);
+        if (booking == null) {
             throw new IllegalStateException("Venue could not be booked for date: " + date);
         }
+        // If the booking is successful, store the booking
+        this.currentBooking = booking;
     }
 
     // Public method to confirm the reservation
@@ -48,6 +51,5 @@ public class VenueBookingSteps {
         }
         System.out.println("Booking confirmed for venue: " + currentBooking.getVenue().getId());
     }
-
 
 }

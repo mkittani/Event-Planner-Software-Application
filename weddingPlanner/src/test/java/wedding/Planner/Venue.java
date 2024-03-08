@@ -5,13 +5,13 @@ public class Venue {
     private String id;
     private String date;
     private String location;
-    private int capacity;
+    private boolean capacity;
 
     // Constructor
-    public Venue(String id, String date, String location, int capacity) {
+    public Venue(String id, String date, int location, boolean capacity) {
         this.id = id;
         this.date = date;
-        this.location = location;
+        this.location = String.valueOf(location);
         this.capacity = capacity;
     }
 
@@ -28,7 +28,7 @@ public class Venue {
         return location;
     }
 
-    public int getCapacity() {
+    public boolean getCapacity() {
         return capacity;
     }
 
