@@ -25,6 +25,6 @@ public abstract class User {
     public void setRole(String role) { this.role = role; }
 
    public String getHallnumber() { return hallnumber; }
-   public void setHallnumber(String Hallnumber) { this.hallnumber = hallnumber; }
+   public void setHallnumber(String hallnumber) { this.hallnumber = hallnumber; }
 
 }
