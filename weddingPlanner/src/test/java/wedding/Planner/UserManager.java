@@ -41,6 +41,8 @@ public class UserManager {
 
     public static void main(String[] args) {
         UserManager userManager = new UserManager();
+        VenueBookingSteps venueBookingSteps = new VenueBookingSteps();
+
 
         // Register some users
         userManager.registerUser("adminUser", "adminPass", "ADMIN","hallnumber");
@@ -55,8 +57,9 @@ public class UserManager {
             out.println("************************************************");
             out.println("1-Sign in");
             out.println("2-Sign up");
+            out.println("3-bookingvenue");
            // out.println("3-Sign up");
-            out.println("3-Exit");
+            out.println("4-Exit");
 
             out.print("Choose an option: ");
             int choice = sc.nextInt();
@@ -118,8 +121,30 @@ public class UserManager {
                     // Display or do additional stuff as needed after successful registration.
 
                     break;
+//******************************************************************************************************
+                case 3: // Book a venue
 
-                case 3: // Exit
+
+                    try {
+                        System.out.println("Please enter the venue ID you wish to book:");
+                        String venueId = sc.nextLine();
+                        //venueBookingSteps.findASuitableVenue(venueId);
+
+                        System.out.println("Please enter the date you wish to book the venue for (YYYY-MM-DD):");
+                        String date = sc.nextLine();
+                        //venueBookingSteps.reserveVenueForSpecificDate(date);
+
+
+                        System.out.println("Venue booked successfully!");
+                        venueBookingSteps.confirmTheReservation();
+
+                    } catch (IllegalStateException e) {
+                        System.out.println(e.getMessage());
+                        // Handle other potential errors or issues here
+                    }
+                    break;
+//******************************************************************************************************************
+                case 4: // Exit
                     exit = true;
                     break;
                 default:
