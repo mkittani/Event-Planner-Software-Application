@@ -1,18 +1,19 @@
 package wedding.Planner;
 
-
 public class Venue {
     private String id;
     private String date;
     private String location;
-    private boolean capacity;
+    private int capacity;
+    private boolean isBooked; // Tracks if the venue is booked
 
     // Constructor
-    public Venue(String id, String date, int location, boolean capacity) {
+    public Venue(String id, String date, String location, int capacity) {
         this.id = id;
         this.date = date;
-        this.location = String.valueOf(location);
+        this.location = location;
         this.capacity = capacity;
+        this.isBooked = false; // Initially, the venue is not booked
     }
 
     // Getters and Setters
@@ -28,10 +29,15 @@ public class Venue {
         return location;
     }
 
-    public boolean getCapacity() {
+    public int getCapacity() {
         return capacity;
     }
 
+    public boolean isBooked() {
+        return isBooked;
+    }
 
-
+    public void setBooked(boolean booked) {
+        isBooked = booked;
+    }
 }

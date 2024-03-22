@@ -6,7 +6,7 @@ import java.util.Scanner;
 import static java.lang.System.*;
 
 public class UserManager {
-//    private static User info;
+    //    private static User info;
 //    private static RegularUser info;
     private Map<String, User> users = new HashMap<>();
     private static User user;
@@ -58,6 +58,9 @@ public class UserManager {
     public static void main(String[] args) {
         UserManager userManager = new UserManager();
         VenueBookingSteps venueBookingSteps = new VenueBookingSteps();
+        VenueService  venueservice = new VenueService();
+        String date;
+
 
         // Register some users
         userManager.registerUser("adminUser", "adminPass", "ADMIN","hallnumber");
@@ -72,9 +75,8 @@ public class UserManager {
             out.println("************************************************");
             out.println("1-Sign in");
             out.println("2-Sign up");
-            out.println("3-bookingvenue");
-           // out.println("3-Sign up");
-            out.println("4-Exit");
+            out.println("3-Exit");
+            // out.println("3-Sign up");
 
             out.print("Choose an option: ");
             int choice = sc.nextInt();
@@ -87,6 +89,36 @@ public class UserManager {
                     out.print("Enter password: ");
                     String password = sc.nextLine();
                     boolean success = userManager.loginUser(username, password);
+                    //calender
+
+                    try {
+                        venueservice.DisplayCalender();
+                        venueservice.displayVenues();
+                        System.out.println("Please enter the venue ID you wish to book:");
+                        String venueId = sc.nextLine();
+                        venueBookingSteps.findASuitableVenue(venueId);
+
+
+                        System.out.println("Please enter the date you wish to book the venue for (YYYY-MM-DD):");
+                        date = sc.nextLine();
+                        venueBookingSteps.reserveVenueForSpecificDate(date); // Attempt to reserve the venue for the specified date
+
+                        System.out.println("Venue booked successfully!");
+                        venueBookingSteps.confirmTheReservation(); // This method should provide additional confirmation
+
+                    } catch (IllegalStateException e) {
+                        System.out.println("Booking failed: " + e.getMessage()); // Print out the error message if booking fails
+                       break;
+                    }
+                    try {
+                        System.out.println("Enter the venue ID for the reservation to cancel:");
+                        String venueId = sc.nextLine();
+                        venueBookingSteps.cancelReservation(venueId);
+                    } catch (IllegalStateException e) {
+                        System.out.println("Cancellation failed: " + e.getMessage());
+
+                    }
+
 //--------------------------------------------------------------------------------------------------------------------------
                     //UserManager userManager2 = new UserManager();
                     if(success) {
@@ -98,6 +130,7 @@ public class UserManager {
                             out.println("2. Active Events");
                             out.println("3. New Event");
                             out.println("4. Events Description");
+                            out.println("5. Display calender and important dates");
                             out.println("Choose an option: ");
                             int userChoice = sc.nextInt();
                             switch (userChoice) {
@@ -189,6 +222,11 @@ public class UserManager {
                                                     "Contains air conditioning, each table takes up to 20 people, Price: 5500 ils\n");
                                             break;
                                     }
+                                    break;
+
+                                case 5:
+                                 //   venueservice.DisplayCalender();
+
                                     break;
 
                                 default:
@@ -309,28 +347,9 @@ public class UserManager {
 
                     break;
 //******************************************************************************************************
-                case 3: // Book a venue
 
-
-                    System.out.println("Please enter the venue ID you wish to book:");
-                    String venueId = sc.nextLine();
-
-                    System.out.println("Please enter the date you wish to book the venue for (YYYY-MM-DD):");
-                    String date = sc.nextLine();
-
-                    try {
-                        venueBookingSteps.findASuitableVenue(venueId); // Attempt to find the venue
-                        venueBookingSteps.reserveVenueForSpecificDate(date); // Attempt to reserve the venue for the specified date
-
-                        System.out.println("Venue booked successfully!");
-                        venueBookingSteps.confirmTheReservation(); // This method should provide additional confirmation
-
-                    } catch (IllegalStateException e) {
-                        System.out.println("Booking failed: " + e.getMessage()); // Print out the error message if booking fails
-                    }
-                    break;
 //******************************************************************************************************************
-                case 4: // Exit
+                case 3: // Exit
                     exit = true;
                     break;
                 default:
@@ -342,8 +361,9 @@ public class UserManager {
         sc.close();
 
         // Attempt to login
-      //  userManager.loginUser("adminUser", "adminPass"); // Should succeed
-       // userManager.loginUser("regularUser", "wrongPass"); // Should fail
+        //  userManager.loginUser("adminUser", "adminPass"); // Should succeed
+        // userManager.loginUser("regularUser", "wrongPass"); // Should fail
     }
 
 }
+
