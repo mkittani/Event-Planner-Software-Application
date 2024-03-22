@@ -118,37 +118,7 @@ public class UserManager {
                     out.print("Enter password: ");
                     String password = sc.nextLine();
                     boolean success = userManager.loginUser(username, password);
-                    //calender
 
-                    try {
-                        venueservice.DisplayCalender();
-                        venueservice.displayVenues();
-                        System.out.println("Please enter the venue ID you wish to book:");
-                        String venueId = sc.nextLine();
-                        venueBookingSteps.findASuitableVenue(venueId);
-
-
-                        System.out.println("Please enter the date you wish to book the venue for (YYYY-MM-DD):");
-                        date = sc.nextLine();
-                        venueBookingSteps.reserveVenueForSpecificDate(date); // Attempt to reserve the venue for the specified date
-
-                        System.out.println("Venue booked successfully!");
-                        venueBookingSteps.confirmTheReservation(); // This method should provide additional confirmation
-
-                    } catch (IllegalStateException e) {
-                        System.out.println("Booking failed: " + e.getMessage()); // Print out the error message if booking fails
-                       break;
-                    }
-                    try {
-                        System.out.println("Enter the venue ID for the reservation to cancel:");
-                        String venueId = sc.nextLine();
-                        venueBookingSteps.cancelReservation(venueId);
-                    } catch (IllegalStateException e) {
-                        System.out.println("Cancellation failed: " + e.getMessage());
-
-                    }
-
-//--------------------------------------------------------------------------------------------------------------------------
                     //UserManager userManager2 = new UserManager();
                     if(success) {
                         user = userManager.getUserById(username);
@@ -160,9 +130,10 @@ public class UserManager {
                             out.println("3. New Event");
                             out.println("4. Events Description");
                             //-----------------------------------Osama Salah---------------------------------------------------------------------------------------
-                            out.println("5. Add Media to My Event");
-                            out.println("6. View My Event Media");
-                            out.println("7. Remove Media from My Event");
+                            out.println("7. Add Media to My Event");
+                            out.println("8. View My Event Media");
+                            out.println("9. Remove Media from My Event");
+                            out.println("10. Calender");
                             //-----------------------------------Osama Salah---------------------------------------------------------------------------------------
                             out.println("Choose an option: ");
                             int userChoice = sc.nextInt();
@@ -172,15 +143,19 @@ public class UserManager {
                                         out.println("You don't have an active event");
                                     else {
                                         out.print("You have an active Event in: " + user.getHallnumber() + "    Enter 1 to Manage");
+
                                         int manageChoice = sc.nextInt();
+
                                         if (manageChoice == 1) {
                                             out.println("1. Delete Event");
+
                                             //--------------------Ameed's Part-------------------------------------
                                             // Void Function that sets the user.getHallnumber() to null
                                             //--------------------Ameed's Part-------------------------------------
 
                                             out.println("Event Deleted Successfully");
                                         }
+
 
                                     }
 
@@ -258,7 +233,7 @@ public class UserManager {
                                     break;
 
                                 //---------------------------Osama Salah-----------------------------------------------------------------------------------------------
-                                case 5: // Add Media to Event
+                                case 7: // Add Media to Event
                                     out.println("Enter the type of media (e.g., 'image', 'video'): ");
                                     String type = sc.nextLine();
                                     out.println("Enter the URL or path to the media: ");
@@ -267,7 +242,7 @@ public class UserManager {
                                     userManager.addMediaToUserEvent(username, mediaToAdd);
                                     break;
 
-                                case 6: // View My Event Media
+                                case 8: // View My Event Media
                                     List<Media> mediaList = userManager.getMediaForUserEvent(username);
                                     if (mediaList == null || mediaList.isEmpty()) {
                                         out.println("You have no media for your event.");
@@ -279,13 +254,45 @@ public class UserManager {
                                     }
                                     break;
 
-                                case 7: // Remove Media from Event
+                                case 9: // Remove Media from Event
                                     out.println("Enter the URL of the media you wish to remove: ");
                                     String mediaUrl = sc.nextLine();
                                     // Assuming the media type isn't necessary for removal, adjust as needed
                                     Media mediaToRemove = new Media("", mediaUrl); // Empty type, only URL needed for this example
                                     userManager.removeMediaFromUserEvent(username, mediaToRemove);
                                     break;
+                                case 10:
+                                //calender
+
+                                try {
+                                    venueservice.DisplayCalender();
+                                    venueservice.displayVenues();
+                                    System.out.println("Please enter the venue ID you wish to book:");
+                                    String venueId = sc.nextLine();
+                                    venueBookingSteps.findASuitableVenue(venueId);
+
+
+                                    System.out.println("Please enter the date you wish to book the venue for (YYYY-MM-DD):");
+                                    date = sc.nextLine();
+                                    venueBookingSteps.reserveVenueForSpecificDate(date); // Attempt to reserve the venue for the specified date
+
+                                    System.out.println("Venue booked successfully!");
+                                    venueBookingSteps.confirmTheReservation(); // This method should provide additional confirmation
+
+                                } catch (IllegalStateException e) {
+                                    System.out.println("Booking failed: " + e.getMessage()); // Print out the error message if booking fails
+                                    break;
+                                }
+                                try {
+                                    System.out.println("Enter the venue ID for the reservation to cancel:");
+                                    String venueId = sc.nextLine();
+                                    venueBookingSteps.cancelReservation(venueId);
+                                } catch (IllegalStateException e) {
+                                    System.out.println("Cancellation failed: " + e.getMessage());
+
+                                }
+
+//--------------------------------------------------------------------------------------------------------------------------
                                 //-----------------------------------Osama Salah---------------------------------------------------------------------------------------
 
 
