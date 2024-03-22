@@ -1,7 +1,5 @@
 package wedding.Planner;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 import static java.lang.System.*;
 
@@ -11,9 +9,41 @@ public class UserManager {
     private Map<String, User> users = new HashMap<>();
     private static User user;
 
+    private EventMediaManager mediaManager = new EventMediaManager(); // Media manager instance
+
     public User getUserById(String username) {
         return users.get(username); // This will return the user associated with the username, or null if no such user exists
     }
+    //--------------------------------------------------------------------------------------------------------------------------
+    public void addMediaToUserEvent(String username, Media media) {
+        User user = users.get(username);
+        if (user != null && user.getHallnumber() != null) {
+            mediaManager.addMediaToEvent(user.getHallnumber(), media);
+            System.out.println("Media added to event.");
+        } else {
+            System.out.println("User does not have an active event to add media.");
+        }
+    }
+    public List<Media> getMediaForUserEvent(String username) {
+        User user = users.get(username);
+        if (user != null && user.getHallnumber() != null) {
+            return mediaManager.getMediaForEvent(user.getHallnumber());
+        } else {
+            System.out.println("User does not have an active event.");
+            return null;
+        }
+    }
+    public void removeMediaFromUserEvent(String username, Media media) {
+        User user = users.get(username);
+        if (user != null && user.getHallnumber() != null) {
+            mediaManager.removeMediaFromEvent(user.getHallnumber(), media);
+            System.out.println("Media removed from event.");
+        } else {
+            System.out.println("User does not have an active event.");
+        }
+    }
+    //--------------------------------------------------------------------------------------------------------------------------
+
 
     public void registerUser(String username, String password, String role, String hallnumber) {
         User user;
@@ -98,6 +128,11 @@ public class UserManager {
                             out.println("2. Active Events");
                             out.println("3. New Event");
                             out.println("4. Events Description");
+                            //-----------------------------------Osama Salah---------------------------------------------------------------------------------------
+                            out.println("5. Add Media to My Event");
+                            out.println("6. View My Event Media");
+                            out.println("7. Remove Media from My Event");
+                            //-----------------------------------Osama Salah---------------------------------------------------------------------------------------
                             out.println("Choose an option: ");
                             int userChoice = sc.nextInt();
                             switch (userChoice) {
@@ -109,6 +144,7 @@ public class UserManager {
                                         int manageChoice = sc.nextInt();
                                         if (manageChoice == 1) {
                                             out.println("1. Delete Event");
+
                                             //--------------------Ameed's Part-------------------------------------
                                             // Void Function that sets the user.getHallnumber() to null
                                             //--------------------Ameed's Part-------------------------------------
@@ -190,6 +226,36 @@ public class UserManager {
                                             break;
                                     }
                                     break;
+                                //---------------------------Osama Salah-----------------------------------------------------------------------------------------------
+                                case 5: // Add Media to Event
+                                    out.println("Enter the type of media (e.g., 'image', 'video'): ");
+                                    String type = sc.nextLine();
+                                    out.println("Enter the URL or path to the media: ");
+                                    String url = sc.nextLine();
+                                    Media mediaToAdd = new Media(type, url);
+                                    userManager.addMediaToUserEvent(username, mediaToAdd);
+                                    break;
+
+                                case 6: // View My Event Media
+                                    List<Media> mediaList = userManager.getMediaForUserEvent(username);
+                                    if (mediaList == null || mediaList.isEmpty()) {
+                                        out.println("You have no media for your event.");
+                                    } else {
+                                        out.println("Your event media:");
+                                        for (Media media : mediaList) {
+                                            out.println("Type: " + media.getType() + ", URL: " + media.getUrl());
+                                        }
+                                    }
+                                    break;
+
+                                case 7: // Remove Media from Event
+                                    out.println("Enter the URL of the media you wish to remove: ");
+                                    String mediaUrl = sc.nextLine();
+                                    // Assuming the media type isn't necessary for removal, adjust as needed
+                                    Media mediaToRemove = new Media("", mediaUrl); // Empty type, only URL needed for this example
+                                    userManager.removeMediaFromUserEvent(username, mediaToRemove);
+                                    break;
+                                    //-----------------------------------Osama Salah---------------------------------------------------------------------------------------
 
                                 default:
                                     throw new IllegalStateException("Unexpected value: " + userChoice);
@@ -270,38 +336,7 @@ public class UserManager {
                     String newPassword = sc.nextLine();
                     out.print("Enter role (ADMIN, SERVICE_PROVIDER, USER): ");
                     String role = sc.nextLine();
-//                    out.println("1. Hall1:\nDate: 15/5/2024\nTime: 6:00 PM - 10:00 PM\nLocation: Nablus\nPeople: 300\nTheme: Dark Grey\nDescription: " +
-//                            "Contains fans, each table takes up to 5 people, Price: 2500 ils\n");
-//                    out.println("2. Hall2:\nDate: 25/5/2024\nTime: 6:00 PM - 10:00 PM\nLocation: Tulkarm\nPeople: 400\nTheme: Off white\nDescription: " +
-//                            "Contains air conditioning, each table takes up to 10 people, Price: 3500 ils\n");
-//                    out.println("3. Hall3:\nDate: 15/6/2024\nTime: 6:00 PM - 10:00 PM\nLocation: Jenin\nPeople: 500\nTheme: Sky Blue\nDescription: " +
-//                            "Contains air conditioning, each table takes up to 15 people, Price: 4500 ils\n");
-//                    out.println("4. Hall4:\nDate: 25/6/2024\nTime: 6:00 PM - 10:00 PM\nLocation: Kalkelye\nPeople: 600\nTheme: Dark Blue\nDescription: " +
-//                            "Contains air conditioning, each table takes up to 20 people, Price: 5500 ils\n");
-//                    out.println("Enter a number from 1 to 4 representing the hall number:");
-//                    int hallChoice = sc.nextInt(); // Read the user's hall number choice
-//                    sc.nextLine(); // Consume the newline left-over
-//
-//                    // Convert the numerical choice into a hall number string
-//                    String hallNumber;
-//                    switch (hallChoice) {
-//                        case 1:
-//                            hallNumber = "Hall1";
-//                            break;
-//                        case 2:
-//                            hallNumber = "Hall2";
-//                            break;
-//                        case 3:
-//                            hallNumber = "Hall3";
-//                            break;
-//                        case 4:
-//                            hallNumber = "Hall4";
-//                            break;
-//                        default:
-//                            out.println("Invalid hall number. Setting default to 'Hall1'.");
-//                            hallNumber = "Hall1"; // Set a default value or handle this case as you see fit
-//                            break;
-//                    }
+
 
                     userManager.registerUser(newUsername, newPassword, role, null); // Register the new user
                     out.println("User registered successfully!\n");
@@ -341,9 +376,6 @@ public class UserManager {
 
         sc.close();
 
-        // Attempt to login
-      //  userManager.loginUser("adminUser", "adminPass"); // Should succeed
-       // userManager.loginUser("regularUser", "wrongPass"); // Should fail
     }
 
 }
