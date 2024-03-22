@@ -134,6 +134,7 @@ public class UserManager {
                             out.println("8. View My Event Media");
                             out.println("9. Remove Media from My Event");
                             out.println("10. Calender");
+                            out.println("11. Cancellation");
                             //-----------------------------------Osama Salah---------------------------------------------------------------------------------------
                             out.println("Choose an option: ");
                             int userChoice = sc.nextInt();
@@ -262,36 +263,41 @@ public class UserManager {
                                     userManager.removeMediaFromUserEvent(username, mediaToRemove);
                                     break;
                                 case 10:
-                                //calender
 
-                                try {
-                                    venueservice.DisplayCalender();
-                                    venueservice.displayVenues();
-                                    System.out.println("Please enter the venue ID you wish to book:");
-                                    String venueId = sc.nextLine();
-                                    venueBookingSteps.findASuitableVenue(venueId);
+                                    try {
+                                        out.println("Displaying available venues and important dates...");
+                                        // Display venues and dates here, as needed
+                                        venueservice.DisplayCalender();
+                                        venueservice.displayVenues();
 
+                                        out.println("Please enter the venue ID you wish to book:");
+                                        sc.nextLine();
+                                        String venueId = sc.nextLine(); // Make sure this line executes to read the venue ID
+                                        venueBookingSteps.findASuitableVenue(venueId);
 
-                                    System.out.println("Please enter the date you wish to book the venue for (YYYY-MM-DD):");
-                                    date = sc.nextLine();
-                                    venueBookingSteps.reserveVenueForSpecificDate(date); // Attempt to reserve the venue for the specified date
-
-                                    System.out.println("Venue booked successfully!");
-                                    venueBookingSteps.confirmTheReservation(); // This method should provide additional confirmation
-
-                                } catch (IllegalStateException e) {
-                                    System.out.println("Booking failed: " + e.getMessage()); // Print out the error message if booking fails
+                                        out.println("Please enter the date you wish to book the venue for (YYYY-MM-DD):");
+                                        date = sc.nextLine(); // Make sure this line executes to read the date
+                                        venueBookingSteps.reserveVenueForSpecificDate(date); // Attempt to reserve the venue for the specified date
+                                        out.println("Venue booked successfully!");
+                                        venueBookingSteps.confirmTheReservation(); // This method should provide additional confirmation
+                                    } catch (IllegalStateException e) {
+                                        out.println("Booking failed: " + e.getMessage()); // Print out the error message if booking fails
+                                    }
                                     break;
-                                }
-                                try {
-                                    System.out.println("Enter the venue ID for the reservation to cancel:");
-                                    String venueId = sc.nextLine();
-                                    venueBookingSteps.cancelReservation(venueId);
-                                } catch (IllegalStateException e) {
-                                    System.out.println("Cancellation failed: " + e.getMessage());
 
-                                }
 
+                                case 11:
+                                    try {
+                                        System.out.println("Enter the venue ID for the reservation to cancel:");
+                                        sc.nextLine();
+                                        String venueId = sc.nextLine();
+                                        venueBookingSteps.cancelReservation(venueId);
+                                    } catch (IllegalStateException e) {
+                                        System.out.println("Cancellation failed: " + e.getMessage());
+                                        break;
+
+                                    }
+                                    break;
 //--------------------------------------------------------------------------------------------------------------------------
                                 //-----------------------------------Osama Salah---------------------------------------------------------------------------------------
 
