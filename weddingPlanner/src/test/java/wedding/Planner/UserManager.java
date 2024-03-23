@@ -9,6 +9,7 @@ public class UserManager {
     private EventMediaManager mediaManager = new EventMediaManager(); // Media manager instance
     private Map<String, User> users = new HashMap<>();
     private static User user;
+    private static PackageList list = new PackageList();
 
     public User getUserById(String username) {
         return users.get(username); // This will return the user associated with the username, or null if no such user exists
@@ -88,8 +89,13 @@ public class UserManager {
         UserManager userManager = new UserManager();
         VenueBookingSteps venueBookingSteps = new VenueBookingSteps();
         VenueService  venueservice = new VenueService();
+        ExpenseManager ExManager = new ExpenseManager();
         String date;
 
+        list.addPackage(new Package("Hall Only",500));
+        list.addPackage(new Package("Hall With Chief",650));
+        list.addPackage(new Package("Hall With DJ",570));
+        list.addPackage(new Package("Hall With DJ and Chief",700));
 
         // Register some users
         userManager.registerUser("adminUser", "adminPass", "ADMIN","hallnumber");
@@ -129,6 +135,8 @@ public class UserManager {
                             out.println("2. Active Events");
                             out.println("3. New Event");
                             out.println("4. Events Description");
+                            out.println("5. Search by Budget");
+                            out.println("6. Track My Expenses");
                             //-----------------------------------Osama Salah---------------------------------------------------------------------------------------
                             out.println("7. Add Media to My Event");
                             out.println("8. View My Event Media");
@@ -143,24 +151,42 @@ public class UserManager {
                                     if (user.getHallnumber() == null)
                                         out.println("You don't have an active event");
                                     else {
-                                        out.print("You have an active Event in: " + user.getHallnumber() + "    Enter 1 to Manage");
+                                        out.print("You have an active Event in: " + user.getHallnumber() + "    Enter 1 to Manage Or 2 to exit: ");
 
                                         int manageChoice = sc.nextInt();
-
                                         if (manageChoice == 1) {
                                             out.println("1. Delete Event");
+                                            int deleteChoice = sc.nextInt();
+                                            if(deleteChoice == 1){
+                                                out.println("You'll Be Charged 70% Of the Amount, Are you Sure You Want To Cancel The Reservation? Y/N: ");
+                                                sc.nextLine();
+                                                String CancelRes = sc.nextLine();
+                                                if(CancelRes.equalsIgnoreCase("Y")){
+                                                    user.setHallnumber(null);
+                                                    boolean updated = ExManager.updateFirstExpenseAmountInCategory(username, "Hall Reservation","Canceled Hall Reservation", 0.7*ExManager.getAmountByCategoryForUser(username,"Hall Reservation"));
+                                                    if (updated) {
+                                                        System.out.println("Your Hall Reservation Expense has been Modified");
+                                                    } else {
+                                                        System.out.println("No Hall Reservation Expense Was Found To Update.");
+                                                    }
 
-                                            //--------------------Ameed's Part-------------------------------------
-                                            // Void Function that sets the user.getHallnumber() to null
-                                            //--------------------Ameed's Part-------------------------------------
+                                                    out.println("Event Deleted Successfully");
 
-                                            out.println("Event Deleted Successfully");
+                                                }
+
+                                            }
+                                            else break;
+
                                         }
+                                        else break;
+
 
 
                                     }
 
+
                                     break;
+
 
                                 case 2: // All Active Events
                                     userManager.printActiveEvents();
@@ -201,9 +227,12 @@ public class UserManager {
                                             break;
                                     }
 
-                                    out.println(user.getPassword());
-                                    user.setHallnumber(hallNumber);
-                                    out.println(user.getHallnumber());
+
+                                    if(hallNumber != null){
+                                        user.setHallnumber(hallNumber);
+                                        ExManager.addExpense(username,"Hall Reservation",500,"Reservation Of "+hallNumber+" Without Chief or DJ");
+                                    }
+
                                     break;
 
                                 case 4: // Events Description
@@ -232,6 +261,90 @@ public class UserManager {
                                             break;
                                     }
                                     break;
+                                case 5: //Search By Budget
+                                    out.println("Enter your budget: ");
+                                    int budget = sc.nextInt();
+                                    if(budget<500){
+                                        out.println("There's No Available Packages For This Budget");
+                                        break;
+                                    }
+
+                                    list.searchBelowCost(budget);
+                                    out.println("select package or exit");
+                                    out.println("*Note that you'll be charged 70% of the Reservation Fee If You Canceled Under Any Situation*");
+
+                                    sc.nextLine();
+                                    String packname = sc.nextLine();
+                                    int hallchoice;
+                                    switch (packname.toUpperCase()){
+                                        case "HALL ONLY":
+                                            if(budget>=500){
+                                                out.println("select hall number form 1 to 4");
+                                                hallchoice = sc.nextInt();
+                                                if(hallchoice>=1&&hallchoice<=4){
+                                                    user.setHallnumber("Hall"+hallchoice);
+                                                    ExManager.addExpense(username,"Hall Reservation",500,"Reservation Of Hall Number "+hallchoice+" Without Chief Or DJ" );
+//                                                    ExManager.printExpensesForUser(username);
+                                                }
+                                                else out.println("invalid input");
+                                            }
+                                            break;
+                                        case "HALL WITH CHIEF":
+                                            if(budget>=650){
+                                                out.println("select hall number form 1 to 4");
+                                                hallchoice = sc.nextInt();
+                                                if(hallchoice>=1&&hallchoice<=4){
+                                                    user.setHallnumber("Hall"+hallchoice+" With Chief");
+                                                    ExManager.addExpense(username,"Hall Reservation",650,"Reservation Of Hall Number "+hallchoice+" With Chief" );
+
+                                                }
+                                                else out.println("invalid input");
+                                            }
+
+                                            break;
+                                        case "HALL WITH DJ":
+                                            if(budget>=570){
+                                                out.println("select hall number form 1 to 4");
+                                                hallchoice = sc.nextInt();
+                                                if(hallchoice>=1&&hallchoice<=4){
+                                                    user.setHallnumber("Hall"+hallchoice+" With DJ");
+                                                    ExManager.addExpense(username,"Hall Reservation",570,"Reservation Of Hall Number "+hallchoice+" With DJ" );
+
+                                                }
+                                                else out.println("invalid input");
+                                            }
+
+                                            break;
+                                        case "HALL WITH DJ AND CHIEF":
+                                            if(budget>=700){
+                                                out.println("select hall number form 1 to 4");
+                                                hallchoice = sc.nextInt();
+                                                if(hallchoice>=1&&hallchoice<=4){
+                                                    user.setHallnumber("Hall"+hallchoice+" With DJ and Chief");
+                                                    ExManager.addExpense(username,"Hall Reservation",700,"Reservation Of Hall Number "+hallchoice+" With Chief And DJ" );
+
+
+                                                }
+                                                else out.println("invalid input");
+                                            }
+
+                                            break;
+                                        case "EXIT":
+
+                                            break;
+
+                                        default:
+                                            out.println("Invalid Input: "+packname);
+                                    }
+
+                                    break;
+
+                                case 6:
+                                    ExManager.printExpensesForUser(username);
+
+                                    break;
+
+
 
                                 //---------------------------Osama Salah-----------------------------------------------------------------------------------------------
                                 case 7: // Add Media to Event
@@ -313,6 +426,9 @@ public class UserManager {
                             out.println("1. Active Events");
                             out.println("2. Register New User");
                             out.println("3. Events Description");
+                            out.println("4. Users Expenses");
+                            out.println("5. Search User Expenses");
+
 
 
                             out.println("Choose an option: ");
@@ -362,12 +478,27 @@ public class UserManager {
                                             break;
                                     }
                                     break;
+
+                                case 4: // Users Expenses
+                                    ExManager.printAllUsersExpenses();
+
+                                    break;
+
+                                case 5:// Search User Expenses
+                                    out.print("Enter The Name Of The User: ");
+                                    sc.nextLine();
+                                    String UserNameExp = sc.nextLine();
+                                    ExManager.printExpensesForUser(UserNameExp);
+                                    break;
+                                default:
+                                    throw new IllegalStateException("Unexpected value: " + userChoice);
                             }
 
 
 
                         }
                     }
+
 //--------------------------------------------------------------------------------------------------------------------------
 
                     if (!success) {
