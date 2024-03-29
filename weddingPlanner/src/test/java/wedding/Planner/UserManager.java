@@ -9,6 +9,8 @@ public class UserManager {
     private Map<String, Package> requestedPackages = new HashMap<>();
     private Map<String, String> negotiatedContracts = new HashMap<>(); // Assuming simple representation for demo
     private Map<String, List<Booking>> userBookings = new HashMap<>();
+    private Map<String, User> users = new HashMap<>();
+    private Map<String, List<ServiceProvider>> serviceProviders = new HashMap<>();
 
 
 
@@ -80,36 +82,34 @@ public class UserManager {
 
      */
     private EventMediaManager mediaManager = new EventMediaManager(); // Media manager instance
-    private Map<String, User> users = new HashMap<>();
+
     private static User user;
     private static PackageList list = new PackageList();
-    private Map<String, List<ServiceProvider>> serviceProviders = new HashMap<>();
 
     public User getUserById(String username) {
         return users.get(username); // This will return the user associated with the username, or null if no such user exists
     }
-
     public void registerUser(String username, String password, String role, String hallnumber) {
-        User user = null;
-        switch (role.toUpperCase()) {
-            case "ADMIN":
-                user = new Admin(username, password, hallnumber);
-                break;
-            case "USER":
-                user = new RegularUser(username, password, hallnumber);
-                break;
-            default:
-                // Handle error or unknown role
-                break;
+        User newUser;
+        if ("ADMIN".equalsIgnoreCase(role)) {
+            newUser = new Admin(username, password, hallnumber); // Assuming an Admin class exists
+        } else { // Default to USER
+            newUser = new RegularUser(username, password, hallnumber); // Assuming a RegularUser class exists
         }
-        if (user != null) {
-            users.put(username, user); // Store the user
-        }
+        users.put(username, newUser);
+        System.out.println(role + " registered successfully.");
     }
-    public void registerUser(String username, String password, String hallnumber, String serviceType, String location, double pricing, double rating) {
-        ServiceProvider user = new ServiceProvider(username, password, hallnumber, serviceType, location, pricing, rating);
-        users.put(username, user); // Store the user
+
+    // Specific method for SERVICE_PROVIDER registration
+    public void registerUser(String username, String password, String role, String hallNumber, String serviceType, String location, double pricing, double rating) {
+        hallNumber = (hallNumber == null || hallNumber.equalsIgnoreCase("none")) ? "" : hallNumber;
+        ServiceProvider serviceProvider = new ServiceProvider(username, password, hallNumber, serviceType, location, pricing, rating);
+        users.put(username, serviceProvider); // Add to general users
+        serviceProviders.computeIfAbsent(serviceType.toLowerCase(), k -> new ArrayList<>()).add(serviceProvider); // Add to service providers
+        System.out.println("Service provider registered successfully.");
     }
+
+
     public void printActiveEvents() {
         boolean hasActiveEvents = false;
         System.out.println("Active Events:");
@@ -164,11 +164,19 @@ public class UserManager {
     }
     // 1.9+1.10+1.11
     public void addServiceProvider(ServiceProvider serviceProvider) {
-        serviceProviders.computeIfAbsent(serviceProvider.getServiceType(), k -> new ArrayList<>()).add(serviceProvider);
+        // Add the service provider to the specific service type list
+        serviceProviders.computeIfAbsent(serviceProvider.getServiceType().toLowerCase(), k -> new ArrayList<>()).add(serviceProvider);
+        // Debugging line to confirm addition
+        System.out.println("Added service provider: " + serviceProvider.getUsername() + " under service type: " + serviceProvider.getServiceType());
     }
 
+
     public List<ServiceProvider> searchServiceProviders(String type, String location, double maxPricing, double minRating) {
-        return serviceProviders.getOrDefault(type, Collections.emptyList()).stream()
+        // Print search parameters for debugging
+        System.out.println("Searching for: Type=" + type + ", Location=" + location + ", Max Pricing=" + maxPricing + ", Min Rating=" + minRating);
+
+        // Perform search with case-insensitive match for type and location
+        return serviceProviders.getOrDefault(type.toLowerCase(), Collections.emptyList()).stream()
                 .filter(provider -> provider.getLocation().equalsIgnoreCase(location))
                 .filter(provider -> provider.getPricing() <= maxPricing)
                 .filter(provider -> provider.getRating() >= minRating)
@@ -234,6 +242,7 @@ public class UserManager {
                             out.println("9. Remove Media from My Event");
                             out.println("10. Calender");
                             out.println("11. Cancellation");
+                            out.println("12. Search for Service Providers");
                             //-----------------------------------Osama Salah---------------------------------------------------------------------------------------
                             out.println("Choose an option: ");
                             int userChoice = sc.nextInt();
@@ -502,6 +511,29 @@ public class UserManager {
 
                                     }
                                     break;
+                                case 12:
+                                    sc.nextLine(); // Consume any leftover newline character
+                                    System.out.print("Enter service type: ");
+                                    String servicetype = sc.nextLine();
+                                    System.out.print("Enter location: ");
+                                    String location = sc.nextLine();
+                                    System.out.print("Enter maximum pricing: ");
+                                    double maxPricing = sc.nextDouble();
+                                    System.out.print("Enter minimum rating: ");
+                                    double minRating = sc.nextDouble();
+                                    sc.nextLine(); // Consume newline left after nextDouble()
+
+                                    List<ServiceProvider> results = userManager.searchServiceProviders(servicetype, location, maxPricing, minRating);
+                                    if (results.isEmpty()) {
+                                        System.out.println("No service providers found matching the criteria.");
+                                    } else {
+                                        System.out.println("Found service providers:");
+                                        for (ServiceProvider provider : results) {
+                                            System.out.println("Name: " + provider.getUsername() + ", Location: " + provider.getLocation() +
+                                                    ", Pricing: " + provider.getPricing() + ", Rating: " + provider.getRating());
+                                        }
+                                    }
+                                    break;
 //--------------------------------------------------------------------------------------------------------------------------
                                 //-----------------------------------Osama Salah---------------------------------------------------------------------------------------
 
@@ -519,6 +551,7 @@ public class UserManager {
                             out.println("3. Events Description");
                             out.println("4. Users Expenses");
                             out.println("5. Search User Expenses");
+                            out.println("6. Search for Service Providers");
 
 
 
@@ -581,6 +614,7 @@ public class UserManager {
                                     String UserNameExp = sc.nextLine();
                                     ExManager.printExpensesForUser(UserNameExp);
                                     break;
+
                                 default:
                                     throw new IllegalStateException("Unexpected value: " + userChoice);
                             }
@@ -589,9 +623,7 @@ public class UserManager {
 
                         }
                     }
-                    if (user.getRole().equals("SERVICE_PROVIDER")){
 
-                    }
 //--------------------------------------------------------------------------------------------------------------------------
 
                     if (!success) {
@@ -599,33 +631,39 @@ public class UserManager {
                     }
                     break;
                 case 2: // Sign up
-                    out.print("Enter username: ");
+                    System.out.print("Enter username: ");
                     String newUsername = sc.nextLine();
-                    out.print("Enter password: ");
+                    System.out.print("Enter password: ");
                     String newPassword = sc.nextLine();
-                    out.print("Enter role (ADMIN, SERVICE_PROVIDER, USER): ");
+                    System.out.print("Enter role (ADMIN, SERVICE_PROVIDER, USER): ");
                     String role = sc.nextLine();
 
                     if (role.equalsIgnoreCase("SERVICE_PROVIDER")) {
-                        out.print("Enter hall number (or 'none' if not applicable): ");
-                        String hallNumber = sc.nextLine().equalsIgnoreCase("none") ? null : sc.nextLine();
-                        out.print("Enter service type: ");
-                        String serviceType = sc.nextLine();
-                        out.print("Enter location: ");
-                        String location = sc.nextLine();
-                        out.print("Enter pricing: ");
-                        double pricing = sc.nextDouble();
-                        out.print("Enter rating: ");
-                        double rating = sc.nextDouble();
-                        sc.nextLine();
+                        System.out.print("Enter hall number (or 'none' if not applicable): ");
+                        String hallNumberInput = sc.nextLine();
+                        // Convert 'none' input to null to match our method's expectation for optional hallNumber
+                        String hallNumber = hallNumberInput.equalsIgnoreCase("none") ? null : hallNumberInput;
 
-                        userManager.registerUser(newUsername, newPassword, hallNumber, serviceType, location, pricing, rating); // Register the new service provider
-                        out.println("Service provider registered successfully!\n");
+                        System.out.print("Enter service type: ");
+                        String serviceType = sc.nextLine();
+                        System.out.print("Enter location: ");
+                        String location = sc.nextLine();
+                        System.out.print("Enter pricing: ");
+                        double pricing = sc.nextDouble();
+                        System.out.print("Enter rating: ");
+                        double rating = sc.nextDouble();
+                        sc.nextLine(); // Consume newline left after nextDouble()
+
+                        // Assuming userManager.registerUser() for SERVICE_PROVIDER includes all necessary details
+                        userManager.registerUser(newUsername, newPassword, role, hallNumber, serviceType, location, pricing, rating);
+                        System.out.println("Service provider registered successfully!\n");
                     } else {
-                        userManager.registerUser(newUsername, newPassword, role, null); // Register the new user for roles other than service provider
-                        out.println("User registered successfully!\n");
+                        // Assuming userManager.registerUser() for ADMIN and USER only requires basic details
+                        userManager.registerUser(newUsername, newPassword, role, null); // Pass null for hallNumber for ADMIN and USER
+                        System.out.println("User registered successfully!\n");
                     }
                     break;
+
 
                 case 3: // Exit
                     exit = true;
