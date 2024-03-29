@@ -4,8 +4,80 @@ import java.util.*;
 import static java.lang.System.*;
 
 public class UserManager {
-    //    private static User info;
-//    private static RegularUser info;
+
+    private Map<String, Package> requestedPackages = new HashMap<>();
+    private Map<String, String> negotiatedContracts = new HashMap<>(); // Assuming simple representation for demo
+    private Map<String, List<Booking>> userBookings = new HashMap<>();
+
+
+
+    //-------------------------------------------
+    /*
+    public void requestPackage(String username, String packageName, double cost) {
+        Package pkg = new Package(packageName, cost);
+        requestedPackages.put(username, pkg);
+    }
+
+    // Assuming a package has been requested by checking if the user has a package associated
+    public boolean isPackageRequested(String username, String packageName) {
+        Package pkg = requestedPackages.get(username);
+        return pkg != null && pkg.getName().equals(packageName);
+    }
+
+    // Simulate contract negotiation with a package name, for simplicity
+    public void negotiateContractTerms(String username, String packageName, String newTerms) {
+        // Here, newTerms could represent adjustments to the package, like adding services
+        // This method assumes you're tracking negotiation by package name for simplicity
+        negotiatedContracts.put(username, packageName + ": " + newTerms);
+    }
+
+    // Check if terms were negotiated for a given package
+    public boolean areContractTermsUpdated(String username, String packageName) {
+        String contractDetails = negotiatedContracts.get(username);
+        return contractDetails != null && contractDetails.startsWith(packageName);
+    }
+
+    // Accept a contract and confirm a booking, for simplicity assuming always successful
+    public boolean acceptContract(String username, String packageName) {
+        Package pkg = requestedPackages.get(username);
+        if (pkg != null && pkg.getName().equals(packageName)) {
+            addBooking(username, packageName); // A simple method to add a booking based on package name
+            return true;
+        }
+        return false;
+    }
+
+    // Method to decline a contract
+    public void declineContract(String username) {
+        negotiatedContracts.remove(username); // Remove negotiation details
+        requestedPackages.remove(username); // Optionally remove the requested package
+    }
+
+    // Add a booking for a user based on a package name
+    public void addBooking(String username, String packageName, String date) {
+        Package pkg = requestedPackages.get(username);
+        if (pkg != null) {
+            // Assuming you have a method or logic to convert package name to Venue object
+            Venue venue = getVenueFromPackageName(packageName);
+            Booking booking = new Booking(venue, date);
+            userBookings.computeIfAbsent(username, k -> new ArrayList<>()).add(booking);
+        }
+    }
+    private Venue getVenueFromPackageName(String packageName) {
+        // Here, you would have some logic to determine the Venue based on the package's name.
+        // This could involve looking up a Venue directly associated with a Package, or
+        // perhaps packages are named in a way that includes the venue's information.
+        // For simplicity, let's assume a default Venue for demonstration:
+        return new Venue("Default Venue Name", "Default Location", 100); // Simplified constructor for Venue
+    }
+
+    // Retrieve bookings for a user
+    public List<Booking> getBookings(String username) {
+        return userBookings.getOrDefault(username, Collections.emptyList());
+    }
+    //------------------------------------------
+
+     */
     private EventMediaManager mediaManager = new EventMediaManager(); // Media manager instance
     private Map<String, User> users = new HashMap<>();
     private static User user;
