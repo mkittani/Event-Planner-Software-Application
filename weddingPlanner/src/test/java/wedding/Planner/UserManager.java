@@ -1,5 +1,6 @@
 package wedding.Planner;
 import java.util.*;
+import java.util.stream.*;
 
 import static java.lang.System.*;
 
@@ -82,25 +83,31 @@ public class UserManager {
     private Map<String, User> users = new HashMap<>();
     private static User user;
     private static PackageList list = new PackageList();
+    private Map<String, List<ServiceProvider>> serviceProviders = new HashMap<>();
 
     public User getUserById(String username) {
         return users.get(username); // This will return the user associated with the username, or null if no such user exists
     }
 
     public void registerUser(String username, String password, String role, String hallnumber) {
-        User user;
+        User user = null;
         switch (role.toUpperCase()) {
             case "ADMIN":
                 user = new Admin(username, password, hallnumber);
                 break;
-            case "SERVICE_PROVIDER":
-                user = new ServiceProvider(username, password, hallnumber);
-                break;
             case "USER":
-            default:
                 user = new RegularUser(username, password, hallnumber);
                 break;
+            default:
+                // Handle error or unknown role
+                break;
         }
+        if (user != null) {
+            users.put(username, user); // Store the user
+        }
+    }
+    public void registerUser(String username, String password, String hallnumber, String serviceType, String location, double pricing, double rating) {
+        ServiceProvider user = new ServiceProvider(username, password, hallnumber, serviceType, location, pricing, rating);
         users.put(username, user); // Store the user
     }
     public void printActiveEvents() {
@@ -154,6 +161,18 @@ public class UserManager {
         } else {
             System.out.println("User does not have an active event.");
         }
+    }
+    // 1.9+1.10+1.11
+    public void addServiceProvider(ServiceProvider serviceProvider) {
+        serviceProviders.computeIfAbsent(serviceProvider.getServiceType(), k -> new ArrayList<>()).add(serviceProvider);
+    }
+
+    public List<ServiceProvider> searchServiceProviders(String type, String location, double maxPricing, double minRating) {
+        return serviceProviders.getOrDefault(type, Collections.emptyList()).stream()
+                .filter(provider -> provider.getLocation().equalsIgnoreCase(location))
+                .filter(provider -> provider.getPricing() <= maxPricing)
+                .filter(provider -> provider.getRating() >= minRating)
+                .collect(Collectors.toList());
     }
     //--------------------------------------------------------------------------------------------------------------------------
 
@@ -570,7 +589,9 @@ public class UserManager {
 
                         }
                     }
+                    if (user.getRole().equals("SERVICE_PROVIDER")){
 
+                    }
 //--------------------------------------------------------------------------------------------------------------------------
 
                     if (!success) {
@@ -585,11 +606,25 @@ public class UserManager {
                     out.print("Enter role (ADMIN, SERVICE_PROVIDER, USER): ");
                     String role = sc.nextLine();
 
+                    if (role.equalsIgnoreCase("SERVICE_PROVIDER")) {
+                        out.print("Enter hall number (or 'none' if not applicable): ");
+                        String hallNumber = sc.nextLine().equalsIgnoreCase("none") ? null : sc.nextLine();
+                        out.print("Enter service type: ");
+                        String serviceType = sc.nextLine();
+                        out.print("Enter location: ");
+                        String location = sc.nextLine();
+                        out.print("Enter pricing: ");
+                        double pricing = sc.nextDouble();
+                        out.print("Enter rating: ");
+                        double rating = sc.nextDouble();
+                        sc.nextLine();
 
-                    userManager.registerUser(newUsername, newPassword, role, null); // Register the new user
-                    out.println("User registered successfully!\n");
-                    // Display or do additional stuff as needed after successful registration.
-
+                        userManager.registerUser(newUsername, newPassword, hallNumber, serviceType, location, pricing, rating); // Register the new service provider
+                        out.println("Service provider registered successfully!\n");
+                    } else {
+                        userManager.registerUser(newUsername, newPassword, role, null); // Register the new user for roles other than service provider
+                        out.println("User registered successfully!\n");
+                    }
                     break;
 
                 case 3: // Exit
@@ -607,4 +642,4 @@ public class UserManager {
     }
 
 }
-
+// 592 SERVICE_PROVIDER menue
