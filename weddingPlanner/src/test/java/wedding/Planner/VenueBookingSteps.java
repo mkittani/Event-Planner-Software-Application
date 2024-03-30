@@ -4,7 +4,7 @@ package wedding.Planner;
 import wedding.Planner.Venue;
 import wedding.Planner.Booking;
 import wedding.Planner.VenueService;
-
+import javax.swing.*;
 import java.util.List;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -12,7 +12,7 @@ import io.cucumber.java.en.Then;
 
 
 
-public class VenueBookingSteps {
+public class  VenueBookingSteps {
 
     private VenueService venueService;
     private Venue selectedVenue;
@@ -40,15 +40,23 @@ public class VenueBookingSteps {
     }
 
     public void reserveVenueForSpecificDate(String date) {
+        // Your reservation logic...
+        JDialog dialog = new JDialog();
+        dialog.setAlwaysOnTop(true); // This makes the dialog always on top
+
         if (selectedVenue == null || !venueService.isAvailable(selectedVenue.getId(), date)) {
-            throw new IllegalStateException("Venue is not available on the selected date.");
+            JOptionPane.showMessageDialog(dialog, "Venue is not available on the selected date.", "Booking Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
         Booking booking = venueService.bookVenue(selectedVenue.getId(), date);
         if (booking == null) {
-            throw new IllegalStateException("Failed to book the venue for the selected date.");
+            JOptionPane.showMessageDialog(dialog, "Failed to book the venue for the selected date.", "Booking Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            currentBooking = booking;
+            String message = "Booking confirmed for venue: " + selectedVenue.getId() + " on date: " + date;
+            JOptionPane.showMessageDialog(dialog, message, "Booking Confirmation", JOptionPane.INFORMATION_MESSAGE);
         }
-        this.currentBooking = booking;
-        System.out.println("Booking confirmed for venue: " + selectedVenue.getId() + " on date: " + date);
+        dialog.dispose(); // Dispose of the dialog after the message is displayed
     }
 
     // Public method to confirm the reservation
