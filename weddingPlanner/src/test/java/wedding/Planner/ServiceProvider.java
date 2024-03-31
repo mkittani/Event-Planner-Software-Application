@@ -13,12 +13,6 @@ public class ServiceProvider extends User {
         this.pricing = pricing;
         this.rating = rating;
     }
-
-    // Getters
-    public String getServiceType() {
-        return serviceType;
-    }
-
     public String getLocation() {
         return location;
     }
@@ -31,20 +25,4 @@ public class ServiceProvider extends User {
         return rating;
     }
 
-    // Setters
-    public void setServiceType(String serviceType) {
-        this.serviceType = serviceType;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public void setPricing(double pricing) {
-        this.pricing = pricing;
-    }
-
-    public void setRating(double rating) {
-        this.rating = rating;
-    }
 }

@@ -1,116 +1,39 @@
 package wedding.Planner;
 import java.util.*;
 import java.util.stream.*;
-import javax.swing.*;   
-
+import javax.swing.*;
 import static java.lang.System.*;
-
 public class UserManager {
-
-    private Map<String, Package> requestedPackages = new HashMap<>();
-    private Map<String, String> negotiatedContracts = new HashMap<>(); // Assuming simple representation for demo
-    private Map<String, List<Booking>> userBookings = new HashMap<>();
+  //  private Map<String, Package> requestedPackages = new HashMap<>();
+   // private Map<String, String> negotiatedContracts = new HashMap<>(); // Assuming simple representation for demo
+  //  private Map<String, List<Booking>> userBookings = new HashMap<>();
     private Map<String, User> users = new HashMap<>();
     private Map<String, List<ServiceProvider>> serviceProviders = new HashMap<>();
-
-
-
-    //-------------------------------------------
-    /*
-    public void requestPackage(String username, String packageName, double cost) {
-        Package pkg = new Package(packageName, cost);
-        requestedPackages.put(username, pkg);
-    }
-
-    // Assuming a package has been requested by checking if the user has a package associated
-    public boolean isPackageRequested(String username, String packageName) {
-        Package pkg = requestedPackages.get(username);
-        return pkg != null && pkg.getName().equals(packageName);
-    }
-
-    // Simulate contract negotiation with a package name, for simplicity
-    public void negotiateContractTerms(String username, String packageName, String newTerms) {
-        // Here, newTerms could represent adjustments to the package, like adding services
-        // This method assumes you're tracking negotiation by package name for simplicity
-        negotiatedContracts.put(username, packageName + ": " + newTerms);
-    }
-
-    // Check if terms were negotiated for a given package
-    public boolean areContractTermsUpdated(String username, String packageName) {
-        String contractDetails = negotiatedContracts.get(username);
-        return contractDetails != null && contractDetails.startsWith(packageName);
-    }
-
-    // Accept a contract and confirm a booking, for simplicity assuming always successful
-    public boolean acceptContract(String username, String packageName) {
-        Package pkg = requestedPackages.get(username);
-        if (pkg != null && pkg.getName().equals(packageName)) {
-            addBooking(username, packageName); // A simple method to add a booking based on package name
-            return true;
-        }
-        return false;
-    }
-
-    // Method to decline a contract
-    public void declineContract(String username) {
-        negotiatedContracts.remove(username); // Remove negotiation details
-        requestedPackages.remove(username); // Optionally remove the requested package
-    }
-
-    // Add a booking for a user based on a package name
-    public void addBooking(String username, String packageName, String date) {
-        Package pkg = requestedPackages.get(username);
-        if (pkg != null) {
-            // Assuming you have a method or logic to convert package name to Venue object
-            Venue venue = getVenueFromPackageName(packageName);
-            Booking booking = new Booking(venue, date);
-            userBookings.computeIfAbsent(username, k -> new ArrayList<>()).add(booking);
-        }
-    }
-    private Venue getVenueFromPackageName(String packageName) {
-        // Here, you would have some logic to determine the Venue based on the package's name.
-        // This could involve looking up a Venue directly associated with a Package, or
-        // perhaps packages are named in a way that includes the venue's information.
-        // For simplicity, let's assume a default Venue for demonstration:
-        return new Venue("Default Venue Name", "Default Location", 100); // Simplified constructor for Venue
-    }
-
-    // Retrieve bookings for a user
-    public List<Booking> getBookings(String username) {
-        return userBookings.getOrDefault(username, Collections.emptyList());
-    }
-    //------------------------------------------
-
-     */
     private EventMediaManager mediaManager = new EventMediaManager(); // Media manager instance
 
     private static User user;
-    private static PackageList list = new PackageList();
+    private static final PackageList list = new PackageList();
 
     public User getUserById(String username) {
-        return users.get(username); // This will return the user associated with the username, or null if no such user exists
+        return users.get(username);
     }
     public void registerUser(String username, String password, String role, String hallnumber) {
         User newUser;
         if ("ADMIN".equalsIgnoreCase(role)) {
-            newUser = new Admin(username, password, hallnumber); // Assuming an Admin class exists
-        } else { // Default to USER
-            newUser = new RegularUser(username, password, hallnumber); // Assuming a RegularUser class exists
+            newUser = new Admin(username, password, hallnumber);
+        } else {
+            newUser = new RegularUser(username, password, hallnumber);
         }
         users.put(username, newUser);
         System.out.println(role + " registered successfully.");
     }
-
-    // Specific method for SERVICE_PROVIDER registration
     public void registerUser(String username, String password, String role, String hallNumber, String serviceType, String location, double pricing, double rating) {
         hallNumber = (hallNumber == null || hallNumber.equalsIgnoreCase("none")) ? "" : hallNumber;
         ServiceProvider serviceProvider = new ServiceProvider(username, password, hallNumber, serviceType, location, pricing, rating);
-        users.put(username, serviceProvider); // Add to general users
+        users.put(username, serviceProvider);
         serviceProviders.computeIfAbsent(serviceType.toLowerCase(), k -> new ArrayList<>()).add(serviceProvider); // Add to service providers
         System.out.println("Service provider registered successfully.");
     }
-
-
     public void printActiveEvents() {
         boolean hasActiveEvents = false;
         System.out.println("Active Events:");
@@ -134,8 +57,6 @@ public class UserManager {
         }
         return false;
     }
-
-    //--------------------------------------------------------------------------------------------------------------------------
     public void addMediaToUserEvent(String username, Media media) {
         User user = users.get(username);
         if (user != null && user.getHallnumber() != null) {
@@ -163,28 +84,15 @@ public class UserManager {
             System.out.println("User does not have an active event.");
         }
     }
-    // 1.9+1.10+1.11
-    public void addServiceProvider(ServiceProvider serviceProvider) {
-        // Add the service provider to the specific service type list
-        serviceProviders.computeIfAbsent(serviceProvider.getServiceType().toLowerCase(), k -> new ArrayList<>()).add(serviceProvider);
-        // Debugging line to confirm addition
-        System.out.println("Added service provider: " + serviceProvider.getUsername() + " under service type: " + serviceProvider.getServiceType());
-    }
-
 
     public List<ServiceProvider> searchServiceProviders(String type, String location, double maxPricing, double minRating) {
-        // Print search parameters for debugging
         System.out.println("Searching for: Type=" + type + ", Location=" + location + ", Max Pricing=" + maxPricing + ", Min Rating=" + minRating);
-
-        // Perform search with case-insensitive match for type and location
         return serviceProviders.getOrDefault(type.toLowerCase(), Collections.emptyList()).stream()
                 .filter(provider -> provider.getLocation().equalsIgnoreCase(location))
                 .filter(provider -> provider.getPricing() <= maxPricing)
                 .filter(provider -> provider.getRating() >= minRating)
                 .collect(Collectors.toList());
     }
-    //--------------------------------------------------------------------------------------------------------------------------
-
     public static void main(String[] args) {
         UserManager userManager = new UserManager();
         VenueBookingSteps venueBookingSteps = new VenueBookingSteps();
@@ -196,8 +104,6 @@ public class UserManager {
         list.addPackage(new Package("Hall With Chief",650));
         list.addPackage(new Package("Hall With DJ",570));
         list.addPackage(new Package("Hall With DJ and Chief",700));
-
-        // Register some users
         userManager.registerUser("adminUser", "adminPass", "ADMIN","hallnumber");
         userManager.registerUser("serviceProviderUser", "servicePass", "SERVICE_PROVIDER","hallnumber");
         userManager.registerUser("regularUser", "userPass", "USER","hallnumber");
@@ -211,12 +117,9 @@ public class UserManager {
             out.println("1-Sign in");
             out.println("2-Sign up");
             out.println("3-Exit");
-            // out.println("3-Sign up");
-
             out.print("Choose an option: ");
             int choice = sc.nextInt();
-            sc.nextLine(); // consume the leftover newline
-
+            sc.nextLine();
             switch (choice) {
                 case 1: // Sign in
                     out.print("Enter username: ");
@@ -224,27 +127,21 @@ public class UserManager {
                     out.print("Enter password: ");
                     String password = sc.nextLine();
                     boolean success = userManager.loginUser(username, password);
-
-                    //UserManager userManager2 = new UserManager();
                     if(success) {
                         user = userManager.getUserById(username);
                         if (user.getRole().equals("USER")) {
-                            //switch statement for USER menu
-                            //out.println("userrole is user");
                             out.println("1. My Active Events");
                             out.println("2. Active Events");
                             out.println("3. New Event");
                             out.println("4. Events Description");
                             out.println("5. Search by Budget");
                             out.println("6. Track My Expenses");
-                            //-----------------------------------Osama Salah---------------------------------------------------------------------------------------
                             out.println("7. Add Media to My Event");
                             out.println("8. View My Event Media");
                             out.println("9. Remove Media from My Event");
                             out.println("10. Calender");
                             out.println("11. Cancellation");
                             out.println("12. Search for Service Providers");
-                            //-----------------------------------Osama Salah---------------------------------------------------------------------------------------
                             out.println("Choose an option: ");
                             int userChoice = sc.nextInt();
                             switch (userChoice) {
@@ -253,7 +150,6 @@ public class UserManager {
                                         out.println("You don't have an active event");
                                     else {
                                         out.print("You have an active Event in: " + user.getHallnumber() + "    Enter 1 to Manage Or 2 to exit: ");
-
                                         int manageChoice = sc.nextInt();
                                         if (manageChoice == 1) {
                                             out.println("1. Delete Event");
@@ -270,30 +166,17 @@ public class UserManager {
                                                     } else {
                                                         System.out.println("No Hall Reservation Expense Was Found To Update.");
                                                     }
-
                                                     out.println("Event Deleted Successfully");
-
                                                 }
-
                                             }
                                             else break;
-
                                         }
                                         else break;
-
-
-
                                     }
-
-
                                     break;
-
-
                                 case 2: // All Active Events
                                     userManager.printActiveEvents();
-
                                     break;
-
                                 case 3: // Reserve New Event
                                     out.println("1. Hall1:\nDate: 15/5/2024\nTime: 6:00 PM - 10:00 PM\nLocation: Nablus\nPeople: 300\nTheme: Dark Grey\nDescription: " +
                                             "Contains fans, each table takes up to 5 people, Price: 2500 ils\n");
@@ -324,11 +207,9 @@ public class UserManager {
                                             break;
                                         default:
                                             out.println("Invalid hall number. Setting default to 'null'.");
-                                            hallNumber = null; // Set a default value or handle this case as you see fit
+                                            hallNumber = null;
                                             break;
                                     }
-
-
                                     if(hallNumber != null){
                                         user.setHallnumber(hallNumber);
                                         ExManager.addExpense(username,"Hall Reservation",500,"Reservation Of "+hallNumber+" Without Chief or DJ");
@@ -385,7 +266,6 @@ public class UserManager {
                                                 if(hallchoice>=1&&hallchoice<=4){
                                                     user.setHallnumber("Hall"+hallchoice);
                                                     ExManager.addExpense(username,"Hall Reservation",500,"Reservation Of Hall Number "+hallchoice+" Without Chief Or DJ" );
-//                                                    ExManager.printExpensesForUser(username);
                                                 }
                                                 else out.println("invalid input");
                                             }
@@ -444,11 +324,8 @@ public class UserManager {
                                     ExManager.printExpensesForUser(username);
 
                                     break;
-
-
-
-                                //---------------------------Osama Salah-----------------------------------------------------------------------------------------------
                                 case 7: // Add Media to Event
+                                    sc.nextLine();
                                     out.println("Enter the type of media (e.g., 'image', 'video'): ");
                                     String type = sc.nextLine();
                                     out.println("Enter the URL or path to the media: ");
@@ -480,22 +357,21 @@ public class UserManager {
 
                                     try {
                                         out.println("Displaying available venues and important dates...");
-                                        // Display venues and dates here, as needed
                                         venueservice.DisplayCalender();
                                         venueservice.displayVenues();
 
                                         out.println("Please enter the venue ID you wish to book:");
                                         sc.nextLine();
-                                        String venueId = sc.nextLine(); // Make sure this line executes to read the venue ID
+                                        String venueId = sc.nextLine();
                                         venueBookingSteps.findASuitableVenue(venueId);
 
                                         out.println("Please enter the date you wish to book the venue for (YYYY-MM-DD):");
-                                        date = sc.nextLine(); // Make sure this line executes to read the date
-                                        venueBookingSteps.reserveVenueForSpecificDate(date); // Attempt to reserve the venue for the specified date
+                                        date = sc.nextLine();
+                                        venueBookingSteps.reserveVenueForSpecificDate(date);
                                         out.println("Venue booked successfully!");
-                                        venueBookingSteps.confirmTheReservation(); // This method should provide additional confirmation
+                                        venueBookingSteps.confirmTheReservation();
                                     } catch (IllegalStateException e) {
-                                        out.println("Booking failed: " + e.getMessage()); // Print out the error message if booking fails
+                                        out.println("Booking failed: " + e.getMessage());
                                     }
                                     break;
 
@@ -535,33 +411,23 @@ public class UserManager {
                                         }
                                     }
                                     break;
-//--------------------------------------------------------------------------------------------------------------------------
-                                //-----------------------------------Osama Salah---------------------------------------------------------------------------------------
-
-
                                 default:
-                                    throw new IllegalStateException("Unexpected value: " + userChoice);
+                                    out.println("Invalid option. Please try again.");
                             }
 
                         }
                         if (user.getRole().equals("ADMIN")) {
-                            //switch statement for ADMIN menu
-                            //out.println("userrole is admin");
                             out.println("1. Active Events");
                             out.println("2. Register New User");
                             out.println("3. Events Description");
                             out.println("4. Users Expenses");
                             out.println("5. Search User Expenses");
                             out.println("6. Search for Service Providers");
-
-
-
                             out.println("Choose an option: ");
                             int userChoice = sc.nextInt();
                             switch (userChoice){
                                 case 1: // All Active Events
                                     userManager.printActiveEvents();
-
                                     break;
 
                                 case 2: // Register New User
@@ -616,17 +482,35 @@ public class UserManager {
                                     ExManager.printExpensesForUser(UserNameExp);
                                     break;
 
+                                case 6:
+                                    sc.nextLine(); // Consume any leftover newline character
+                                    System.out.print("Enter service type: ");
+                                    String servicetype = sc.nextLine();
+                                    System.out.print("Enter location: ");
+                                    String location = sc.nextLine();
+                                    System.out.print("Enter maximum pricing: ");
+                                    double maxPricing = sc.nextDouble();
+                                    System.out.print("Enter minimum rating: ");
+                                    double minRating = sc.nextDouble();
+                                    sc.nextLine(); // Consume newline left after nextDouble()
+
+                                    List<ServiceProvider> results = userManager.searchServiceProviders(servicetype, location, maxPricing, minRating);
+                                    if (results.isEmpty()) {
+                                        System.out.println("No service providers found matching the criteria.");
+                                    } else {
+                                        System.out.println("Found service providers:");
+                                        for (ServiceProvider provider : results) {
+                                            System.out.println("Name: " + provider.getUsername() + ", Location: " + provider.getLocation() +
+                                                    ", Pricing: " + provider.getPricing() + ", Rating: " + provider.getRating());
+                                        }
+                                    }
+                                    break;
+
                                 default:
-                                    throw new IllegalStateException("Unexpected value: " + userChoice);
+                                    out.println("Invalid option. Please try again.");
                             }
-
-
-
                         }
                     }
-
-//--------------------------------------------------------------------------------------------------------------------------
-
                     if (!success) {
                         out.println("Login failed!");
                     }
@@ -653,13 +537,12 @@ public class UserManager {
                         double pricing = sc.nextDouble();
                         System.out.print("Enter rating: ");
                         double rating = sc.nextDouble();
-                        sc.nextLine(); // Consume newline left after nextDouble()
+                        sc.nextLine();
 
-                        // Assuming userManager.registerUser() for SERVICE_PROVIDER includes all necessary details
                         userManager.registerUser(newUsername, newPassword, role, hallNumber, serviceType, location, pricing, rating);
                         System.out.println("Service provider registered successfully!\n");
                     } else {
-                        // Assuming userManager.registerUser() for ADMIN and USER only requires basic details
+
                         userManager.registerUser(newUsername, newPassword, role, null); // Pass null for hallNumber for ADMIN and USER
                         System.out.println("User registered successfully!\n");
                     }
@@ -674,11 +557,6 @@ public class UserManager {
                     break;
             }
         }
-
         sc.close();
-
-
     }
-
 }
-// 592 SERVICE_PROVIDER menue

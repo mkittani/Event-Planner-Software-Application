@@ -1,23 +1,12 @@
 package wedding.Planner;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import java.util.*;
 public class EventMediaManager {
-    // Map to store event hall numbers and their associated media files
-    private Map<String, List<Media>> eventMediaMap = new HashMap<>();
+    private final Map<String, List<Media>> eventMediaMap = new HashMap<>();
 
-    // Method to add media to an event
     public void addMediaToEvent(String hallNumber, Media media) {
-        // Check if the event already has media files associated with it
         List<Media> mediaList = eventMediaMap.getOrDefault(hallNumber, new ArrayList<>());
-
-        // Add the new media to the list
         mediaList.add(media);
 
-        // Put the updated list back into the map
         eventMediaMap.put(hallNumber, mediaList);
     }
 
@@ -41,35 +30,23 @@ public class EventMediaManager {
         }
     }
 
-    // You could add more methods here for other functionalities such as updating media, listing all media, etc.
+
 }
 
-// Class to represent media files associated with events
+
 class Media {
-    private String type; // e.g., "image", "video"
-    private String url; // URL or path to the media file
+    private final String type;
+    private final String url;
 
     public Media(String type, String url) {
         this.type = type;
         this.url = url;
     }
-
-    // Getters and setters
     public String getType() {
         return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getUrl() {
         return url;
     }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    // You could add more attributes and methods as needed, depending on the requirements for the media
 }
