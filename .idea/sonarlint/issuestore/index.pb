@@ -37,3 +37,13 @@ g
 7weddingPlanner/src/test/java/wedding/Planner/Venue.java,5\d\5d0739ae125acecdd7007f9e2d1521c2d9d4ed49
 n
 >weddingPlanner/src/test/java/wedding/Planner/VenueService.java,8\6\866bca2f64d9eb06c4ed1aacf9e4a2a0a2ddc046
+w
+G.idea/sonarlint/issuestore/2/f/2f651c1d874f7a0ebeab99aeb0ec14aacc20fdfd,1\7\178e5362df3238643817f7ac09d066eda0e9db89
+w
+G.idea/sonarlint/issuestore/1/7/1730972fa1746108a7a6cf564fc844c2e1b2d9c1,6\d\6d37b77183c66fa97303e19f2d88d913c1125ec7
+w
+G.idea/sonarlint/issuestore/0/c/0cca415258b4e08da534a73f0e5410d573705a0a,c\d\cdb47ed3984a0160492e0dddfbcfe14fbba15eb8
+Å
+Q.idea/sonarlint/securityhotspotstore/0/c/0cca415258b4e08da534a73f0e5410d573705a0a,b\4\b4114ec4809800d38a5e44f0cbfbb099bbbd9104
+S
+#.idea/sonarlint/issuestore/index.pb,9\f\9fe84ebb15faf917b7def6236dba604453cc61e0
