@@ -53,4 +53,42 @@
 	</dependency>
 	
     </dependencies>
+
+	<properties>
+  		<sonar.organization>test-taneeb</sonar.organization>
+  		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+  <!-- Disable SonarQube analysis during CI builds -->
+  		<sonar.skip>true</sonar.skip>
+	</properties>
+
+	 <build>
+		  <plugins>
+			   <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    
+                    <executions>
+                        <!-- Prepares the property pointing to the JaCoCo runtime agent
+                        which is passed as VM argument when Maven the Surefire plugin is executed. -->
+                        <execution>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                        </execution>
+                        <!-- Ensures that the code coverage report is created after
+                        all tests have been run. -->
+                        <execution>
+                            <id>generate-report</id>
+			    <phase>verify</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                </plugins>
+			  
+  </build>
+
+
 </project>
