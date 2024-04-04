@@ -1,0 +1,10 @@
+
+
+java:S2629""7Use the built-in formatting to construct this argument.(ü³¼ðùÿÿÿÿ8¿îÞ„ê1J$1c3251ae-3cb4-4d20-929d-679cf326faba
+š	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Ø–¢øúÿÿÿÿJ$772a0d59-969a-4b66-aa54-805fdc542f86
+Ÿ
+java:S1450"^Remove the "expenseCategory" field and declare it as a local variable in the relevant methods.(Ü›íÁøÿÿÿÿJ$9422b4c8-0a58-40a4-8421-55be36d43a92
+“
+java:S1450"WRemove the "userRole" field and declare it as a local variable in the relevant methods.(’·£«J$620c3455-47c8-4c37-b75c-14ed49233a73
+h
+java:S1068",Remove this unused "userRole" private field.(’·£«J$4913d041-51b2-4d03-81a8-936dcca45f8f

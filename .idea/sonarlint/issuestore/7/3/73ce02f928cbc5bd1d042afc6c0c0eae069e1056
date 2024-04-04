@@ -1,3 +1,6 @@
 
-8
-java:S2187"Add some tests to this class.(²»§øÿÿÿÿ
+š	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Ø–¢øúÿÿÿÿJ$3ea4259d-0a44-45a6-91ab-c7d68f315675
+”
+java:S1450	"SRemove the "user" field and declare it as a local variable in the relevant methods.(‚ÎÕŞşÿÿÿÿJ$eb26f1a1-46f0-4c06-90b0-8e999aea0816
+i
+java:S1068	"(Remove this unused "user" private field.(‚ÎÕŞşÿÿÿÿJ$14ca4ee2-d101-4768-9723-66cc91064f6f

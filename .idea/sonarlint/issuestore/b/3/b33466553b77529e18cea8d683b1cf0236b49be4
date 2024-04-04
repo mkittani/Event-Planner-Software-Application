@@ -1,0 +1,18 @@
+
+Y
+java:S2629+"7Use the built-in formatting to construct this argument.(Õ¤Ñ«øÿÿÿÿ8æü„ê1
+š	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Ø–¢øúÿÿÿÿJ$8c1bf042-35d8-4ee7-8f69-8c20fabd2d68
+J
+java:S3416
+"(Update this logger to use "Login.class".(ïŠ€‡ÿÿÿÿÿ8ıü„ê1
+‰	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.( šŒÑJ$267704b8-246a-4db6-9c42-164ff17833b6
+‰	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¶ËßıJ$925cf068-e98a-48a8-8f83-be50df7509dd
+d
+java:S4274%"(Replace this assert with a proper check.(ÌšğJ$cfd2249a-a890-46b3-aab3-a661d87d3408
+	java:S100$"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ƒæ™ÒùÿÿÿÿJ$3d5ec400-39eb-468e-aeaa-2df2b46be507
+	java:S100)"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¶Ä«ûÿÿÿÿJ$24454f35-b100-4076-90d4-4658abf4766e
+i
+java:S42741"(Replace this assert with a proper check.(å¤ÀâøÿÿÿÿJ$f20aee25-6d26-422a-bdc7-600ef20b1473
+	java:S1000"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ò²ôñşÿÿÿÿJ$fe650083-fb7c-45d9-a5c9-04c087059dbe
+	java:S1005"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(©…úÿÿÿÿJ$df96a428-a978-46d5-9aab-74c9f30113e5
+k	java:S1067"+Replace this use of System.out by a logger.(ê–Ó·ÿÿÿÿÿJ$2795e452-0b79-4ec9-ac5a-3d29dcca24f6

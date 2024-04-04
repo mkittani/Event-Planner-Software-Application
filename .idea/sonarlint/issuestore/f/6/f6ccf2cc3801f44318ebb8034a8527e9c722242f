@@ -1,0 +1,29 @@
+
+h
+java:S1192"FDefine a constant instead of duplicating this literal "ADMIN" 4 times.(ìŠ²Õşÿÿÿÿ8ú„à«ê1
+”	java:S117£"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ı¥ˆÓ8íÜƒê1J$c08dc986-df07-4dd0-9222-f74512880051
+Y
+java:S2629"7Use the built-in formatting to construct this argument.(ùËÜøÿÿÿÿ8•…à«ê1
+Y
+java:S26298"7Use the built-in formatting to construct this argument.(®ş¬øüÿÿÿÿ8Áá„ê1
+
+java:S2629["7Use the built-in formatting to construct this argument.(£ñï£şÿÿÿÿ8èı‚ê1J$b8266e9c-74cb-44ff-8b7d-1f9949c0ca3b
+U
+java:S2629«"7Use the built-in formatting to construct this argument.(¬¨öÊ8¢…à«ê1
+š	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Ø–¢øúÿÿÿÿJ$a6a76a0d-6a98-4bd1-8dda-813dc57ce1e9
+u
+java:S1450"SRemove the "user" field and declare it as a local variable in the relevant methods.(±Á´üûÿÿÿÿ8ÌÃá„ê1
+Z
+java:S1117*"8Rename "user" which hides the field declared at line 12.(Üî®ıÿÿÿÿ8ŞÃá„ê1
+U
+java:S11176"8Rename "user" which hides the field declared at line 12.(Ìÿ›¡8âÃá„ê1
+U
+java:S1117?"8Rename "user" which hides the field declared at line 12.(Ìÿ›¡8äÃá„ê1
+U
+java:S1117H"8Rename "user" which hides the field declared at line 12.(Ìÿ›¡8æÃá„ê1
+U
+java:S1117Q"8Rename "user" which hides the field declared at line 12.(Ìÿ›¡8çÃá„ê1
+–
+java:S3776b"SRefactor this method to reduce its Cognitive Complexity from 242 to the 15 allowed.(Çµí‘8‰éı‚ê1J$98ae1be1-429a-4c21-bc33-25109fdb3159
+‹
+java:S6541b"ÇA "Brain Method" was detected. Refactor it to reduce at least one of the following metrics: LOC from 426 to 64, Complexity from 73 to 14, Nesting Level from 10 to 2, Number of Variables from 65 to 6.(Çµí‘8äéı‚ê1J$a4a56f17-60b6-4f71-8c0c-608fcda8c6de
