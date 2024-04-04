@@ -24,8 +24,8 @@ public class Expense {
     public void setAmount(double amount) {
         this.amount = amount;
     }
-    public void setCategory(String Category) {
-        this.category = Category;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     // Ensure there are getters for all fields for accessing them
@@ -37,7 +37,7 @@ public class Expense {
 
     @Override
     public String toString() {
-        return "Expense{Category='" + category + '\'' +
+        return "Expense{category='" + category + '\'' +
                 ", Amount=" + amount +
                 ", Date of Reservation='" + date + '\'' +
                 ", Description='" + description + '\'' +

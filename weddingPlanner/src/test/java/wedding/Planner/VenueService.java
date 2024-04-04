@@ -75,7 +75,7 @@ public class VenueService {
         if (venue != null && !venue.isBooked() && venue.getDate().equals(date)) {
             venue.setBooked(true); // Mark the venue as booked
             // Assuming Booking constructor accepts Venue and date, and sets them appropriately
-            return new Booking(venue, date);
+            return new Booking(venue);
         }
         return null; // Venue is already booked or does not meet criteria
     }

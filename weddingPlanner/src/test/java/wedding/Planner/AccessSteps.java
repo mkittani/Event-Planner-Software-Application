@@ -1,4 +1,5 @@
 package wedding.Planner;
+import java.util.logging.Logger;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -6,12 +7,14 @@ import io.cucumber.java.en.When;
 import org.junit.Assert;
 
 public class AccessSteps {
+    private static final Logger logger = Logger.getLogger(AccessSteps.class.getName());
+
     boolean userHasActiveEvent = false;
     boolean isAdmin = false;
 
     @Given("the user is in the MENU page")
     public void the_user_is_in_the_menu_page() {
-        System.out.println("inside the user is in the MENU page");
+        logger.info("inside the user is in the MENU page");
     }
     @Given("the user has an active event")
     public void the_user_has_an_active_event() {
@@ -21,14 +24,13 @@ public class AccessSteps {
     public void user_clicks_at_manage() {
         if (userHasActiveEvent) {
             // Redirect user to the event managing page
-            System.out.println("Redirecting user to the event managing page");
+            logger.info("Redirecting user to the event managing page");
         } else {
             Assert.fail("User does not have an active event");
         }
     }
     @Then("user should be redirected to the event managing page")
     public void user_should_be_redirected_to_the_event_managing_page() {
-
     }
 
 //--------------------------------------------Scenario 2-----------------------------------------------------------
@@ -39,7 +41,7 @@ public class AccessSteps {
     @When("user clicks at ACTIVE EVENTS")
     public void user_clicks_at_active_events() {
         if (!userHasActiveEvent) {
-            System.out.println("User doesn't have an active event");
+            logger.info("User doesn't have an active event");
         }
     }
     @Then("user should be presented with {string} Message")
@@ -52,13 +54,13 @@ public class AccessSteps {
     public void the_admin_is_in_the_menu_page() {
         // Simulating admin logged in
         isAdmin = true;
-        System.out.println("Admin is in the MENU page");
+        logger.info("Admin is in the MENU page");
     }
     @When("admin clicks at ACTIVE EVENTS")
     public void admin_clicks_at_active_events() {
         // Handling admin clicking at ACTIVE EVENTS
         if (isAdmin) {
-            System.out.println("Redirecting admin to the event managing page");
+            logger.info("Redirecting admin to the event managing page");
             // Assuming admin is redirected to the event managing page
         } else {
             Assert.fail("Only admin can access this feature");
@@ -66,17 +68,15 @@ public class AccessSteps {
     }
     @Then("admin should be redirected to the event managing page")
     public void admin_should_be_redirected_to_the_event_managing_page() {
-
-
     }
     @Then("admin should see all ACTIVE EVENTS")
     public void admin_should_see_all_active_events() {
         // Asserting that admin can see all active events
-        System.out.println("Admin can see all active events");
+        logger.info("Admin can see all active events");
     }
     @Then("admin should be able to manage any ACTIVE EVENT")
     public void admin_should_be_able_to_manage_any_active_event() {
         // Asserting that admin can manage any active event
-        System.out.println("Admin can manage any active event");
+        logger.info("Admin can manage any active event");
     }
 }

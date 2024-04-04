@@ -1,35 +1,39 @@
 package wedding.Planner;
+import java.util.logging.Logger;
+
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class ExpenseTrackingSteps {
+    private static final Logger logger = Logger.getLogger(ExpenseTrackingSteps.class.getName());
+
     private String userRole;
     private boolean reservationMade = false;
     private String expenseCategory = "";
 
     @Given("User role is {string}")
-    public void user_role_is(String role) {
+    public void userRoleIs(String role) {
         // Set the user role based on the scenario step
         this.userRole = role;
     }
 
     @When("User Makes a Reservation")
-    public void user_makes_a_reservation() {
+    public void userMakesAReservation() {
         // Simulate making a reservation
         // In a real application, this would involve more complex logic
         this.reservationMade = true;
     }
 
     @Then("User Expense Should Be Tracked Under Hall Reservation Category")
-    public void user_expense_should_be_tracked_under_hall_reservation_category() {
+    public void userExpenseShouldBeTrackedUnderHallReservationCategory() {
         // Check if a reservation was made and set the expense category accordingly
         if (reservationMade) {
             this.expenseCategory = "Hall Reservation";
-            System.out.println("Expense tracked under: " + this.expenseCategory);
+            logger.info("Expense tracked under: " + this.expenseCategory);
         } else {
-            System.out.println("No reservation made, no expense tracked.");
+            logger.info("No reservation made, no expense tracked.");
         }
     }
 }

@@ -81,12 +81,11 @@ public class RequestPackageEtcSteps {
     }
     @Given("the user is logged in and on the vendor's page")
     public void the_user_is_logged_in_and_on_the_vendor_s_page() {
-        // Example of logging in a user and setting the current page to the vendor's page
         userManager.registerUser("user", "pass", "USER", "hall1");
-        boolean loginSuccess = userManager.loginUser("user", "pass");
-        assertTrue(loginSuccess);
-        currentUser = userManager.getUserById("user");
+        User loggedInUser = userManager.loginUser("user", "pass");
+        assertNotNull(loggedInUser);
 
+        currentUser = loggedInUser;
     }
 
     @When("the user requests a package from the vendor")
@@ -98,6 +97,6 @@ public class RequestPackageEtcSteps {
     public void a_package_request_is_sent_to_the_vendor() {
 
     }
-    
+
 
 }
